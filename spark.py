@@ -46,7 +46,8 @@ if __name__ == "__main__":
 
     # 1. Número de hosts únicos
 
-    rddHosts = rddDataParsed.map(lambda line: line['host'].lower())
+    rddHosts = rddDataParsed.map(
+        lambda line: line['host'].lower())
 
     with open('./results/result_1.csv', 'w+') as csvFile:
 
@@ -56,9 +57,11 @@ if __name__ == "__main__":
 
     # 2. O total de erro 404.
 
-    rddTotal404 = rddDataParsed.map(lambda line: line['statusCode'])
+    rddTotal404 = rddDataParsed.map(
+        lambda line: line['statusCode'])
 
-    rddTotal404 = rddTotal404.filter(lambda status: status == "404")
+    rddTotal404 = rddTotal404.filter(
+        lambda status: status == "404")
 
     with open('./results/result_2.csv', 'w+') as csvFile:
 
@@ -69,12 +72,15 @@ if __name__ == "__main__":
     
     # Map our target data, if not 404 puts '' in request key
     rddTop_5_404 = rddDataParsed.map(
-        lambda line: (line['request'], 1) if line['statusCode'] == "404" else ('', 1))
+        lambda line: (line['request'], 1) \
+        if line['statusCode'] == "404" else ('', 1))
     
     # Removing invalid data
-    rddTop_5_404 = rddTop_5_404.filter(lambda url: url[0] != '')
+    rddTop_5_404 = rddTop_5_404.filter(
+        lambda url: url[0] != '')
     
-    rddTop_5_404 = rddTop_5_404.reduceByKey(lambda x, y: x + y)
+    rddTop_5_404 = rddTop_5_404.reduceByKey(
+        lambda x, y: x + y)
 
     with open('./results/result_3.csv', 'w+') as csvFile:
 
@@ -87,12 +93,15 @@ if __name__ == "__main__":
 
     # Map our target data, if not 404 puts '' in timestamp key
     rddDays404 = rddDataParsed.map(
-        lambda line: (line['timestamp'][:11], 1) if line['statusCode'] == "404" else ('', 1))
+        lambda line: (line['timestamp'][:11], 1) \
+        if line['statusCode'] == "404" else ('', 1))
 
     # Removing invalid data
-    rddDays404 = rddDays404.filter(lambda url: url[0] != '')
+    rddDays404 = rddDays404.filter(
+        lambda url: url[0] != '')
 
-    rddDays404 = rddDays404.reduceByKey(lambda x, y: x + y)
+    rddDays404 = rddDays404.reduceByKey(
+        lambda x, y: x + y)
 
     with open('./results/result_4.csv', 'w+') as csvFile:
         
@@ -102,7 +111,8 @@ if __name__ == "__main__":
     # 5. Total de bytes retornado
 
     rddSumBytes = rddDataParsed.map(
-        lambda line: int(line['bytes']) if line['bytes'].isdigit() else 0)
+        lambda line: int(line['bytes']) \
+        if line['bytes'].isdigit() else 0)
 
     with open('./results/result_5.csv', 'w+') as csvFile:
         
