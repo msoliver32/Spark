@@ -39,7 +39,7 @@ if __name__ == "__main__":
     rddAug = sc.textFile("./files/access_log_Aug95")
     rddJul = sc.textFile("./files/access_log_Jul95")
 
-    # Union a parse data
+    # Union and parse data
     rddData = rddJul + rddAug
     rddDataParsed = rddData.map(parse)
 
